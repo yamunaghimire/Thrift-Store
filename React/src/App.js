@@ -67,14 +67,17 @@ import Footer from './Components/Footer';
 import Register from './Components/Register';
 import { ToastContainer } from 'react-toastify';
 import About from './Pages/About';
-import WhyChooseUs from './Components/Why';
-import NewArrivals from './Components/NewArrivals';
+
+// import NewArrivals from './Components/NewArrivals';
 import Login from './Components/Login';
 // import Admin from './Components/Admin';
 import ProductList from './Pages/productList';
 import AdminUpload from './Pages/AdminUpload';
 import ProductCard from './Components/ProductCard';
 import { AuthProvider } from './contexts/AuthContext';
+
+import ProductDetails from './Components/ProductDetails';
+import CartPage from './Components/Cart';
 // import ProtectedRoute from './Components/ProtectedRoute';
 
 const App = () => {
@@ -90,9 +93,8 @@ const App = () => {
                 <>
                   <Hero />
                   <Collections />
-                  <NewArrivals />
-                  <WhyChooseUs />
-                  <ProductList/>
+                  {/* <NewArrivals /> */}
+                  {/* <ProductList/> */}
                   <Footer />
                 </>
               }
@@ -105,14 +107,10 @@ const App = () => {
           
             <Route path="/upload" element={<AdminUpload />} />
             
-            {/* <Route
-              path="/admin"
-              element={<ProtectedRoute element={<Admin />} isAdminRoute={true} />}
-            /> */}
-            {/* <Route
-              path="/upload"
-              element={<ProtectedRoute element={<AdminUpload />} isAdminRoute={true} />}
-            /> */}
+            <Route path="/products/:id" element={<ProductDetails />} />
+            <Route path="/cart" element={<CartPage/>} />
+
+       
             <Route path="/productlist" element={<ProductList />} />
             <Route path="/productcard" element={<ProductCard />} />
           </Routes>

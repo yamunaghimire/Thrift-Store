@@ -1,43 +1,56 @@
-import React from 'react';
-import westernImage from '../assests/images/western.jpg';
-import traditionalsImage from '../assests/images/traditional.png';
-import accessoriesImage from '../assests/images/accesories.jpg';
-import skincareImage from '../assests/images/skincare.png';
-import makeupImage from '../assests/images/makeup.png';
+import React from "react";
+import { useNavigate } from "react-router-dom";
+import westernImage from "../assests/images/western.jpg";
+import traditionalsImage from "../assests/images/traditional.png";
+import accessoriesImage from "../assests/images/accesories.jpg";
+import skincareImage from "../assests/images/skincare.png";
+import makeupImage from "../assests/images/makeup.png";
 
 const Collections = () => {
-    const items = [
-        { name: "Western", image: westernImage },
-        { name: "Traditionals", image: traditionalsImage },
-        { name: "Accessories", image: accessoriesImage },
-        { name: "Skincare", image: skincareImage },
-        { name: "Makeup", image: makeupImage },
-    ];
+  const navigate = useNavigate();
 
-    return (
-        <div className="flex flex-col py-10 px-[150px]">
-            <h1 className="text-2xl font-bold text-gray-800 mb-10">Featured Categories</h1>
-            <div className="flex space-x-12 flex-wrap">
-                {items.map((item, index) => (
-                    <div key={index} className="flex flex-col items-center">
-                        {/* Image Container */}
-                        <div className="bg-[#f9f5ec] w-[200px] h-[200px] flex items-center justify-center rounded-full shadow-md overflow-hidden">
-                            {/* Image with Classes */}
-                            <img
-                                src={item.image}
-                                alt={item.name}
-                                className="w-full h-full object-cover hover:scale-105 transition-transform duration-300"
-                            />
-                        </div>
-                        {/* Item Name */}
-                        <span className="mt-4 text-lg font-semibold text-center text-gray-800">
-                            {item.name}
-                        </span>
-                    </div>
-                ))}
+  const items = [
+    { name: "Western", image: westernImage, path: "/productlist" },
+    { name: "Traditional", image: traditionalsImage, path: "/traditionals" },
+    { name: "Accessories", image: accessoriesImage, path: "/lehenga" },
+    { name: "Makeup", image: skincareImage, path: "/suits" },
+    // { name: "Skinc", image: makeupImage, path: "/makeup" },
+  ];
+
+  return (
+    <div className="bg-white px-24 mb-[50px]">
+      {/* Title */}
+      <h1 className="text-4xl font-bold text-gray-900 mb-12 text-center mt-[50px]">
+      Discover Thrifted Collections
+      </h1>
+
+      {/* Collection Grid */}
+      <div className="grid grid-cols-4 gap-8">
+        {items.map((item, index) => (
+          <div
+            key={index}
+            className="group relative cursor-pointer"
+            onClick={() => navigate(item.path)}
+          >
+            {/* Rectangular Box */}
+            <div className="relative bg-white w-full h-[300px] rounded-md overflow-hidden shadow-lg hover:shadow-xl transition-shadow duration-300">
+              <img
+                src={item.image}
+                alt={item.name}
+                className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
+              />
+              {/* Text Overlay */}
+              <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+                <span className="text-white text-xl font-semibold tracking-wide">
+                  {item.name}
+                </span>
+              </div>
             </div>
-        </div>
-    );
+          </div>
+        ))}
+      </div>
+    </div>
+  );
 };
 
 export default Collections;

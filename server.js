@@ -194,6 +194,8 @@ import jwt from "jsonwebtoken";
 import connectDB from "./config/db.js";
 import UserModel from "./models/UserModel.js";
 import CategoryModel from "./models/CategoryModel.js"; // Corrected import
+import Product from "./models/ProductModel.js"; // Adjust the path to where your Product model is located
+
 
 import productRoutes from "./routes/productRoutes.js";
 
@@ -282,6 +284,20 @@ app.get("/categories", async (req, res) => {
 
 // Routes
 app.use("/api/products", productRoutes);
+
+app.get('/api/products/:id', async (req, res) => {
+  try {
+    const product = await Product.findById(req.params.id).populate("category");
+    if (!product) {
+      return res.status(404).json({ message: 'Product not found' });
+    }
+    res.json(product);
+  } catch (error) {
+    console.error("Error fetching product:", error); // Log the error
+    res.status(500).json({ message: 'Error fetching product', error: error.message });
+  }
+});
+
 
 // Default route
 app.get("/", (req, res) => {

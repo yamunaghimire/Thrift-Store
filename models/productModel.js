@@ -20,7 +20,6 @@ const productSchema = new mongoose.Schema(
       ref: "Category", // Reference to the Category model
       required: true,
     },
-  
     image: {
       type: String, // URL or path to the product image
     },
@@ -28,4 +27,7 @@ const productSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.model("Product", productSchema);
+// Check if the model already exists before defining it
+const Product = mongoose.models.Product || mongoose.model("Product", productSchema);
+
+export default Product;

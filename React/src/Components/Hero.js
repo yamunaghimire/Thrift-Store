@@ -1,19 +1,33 @@
-import React from 'react';
-import phone from '../images/phone.png';
+import React from "react";
+import productImage from "../images/phone.png"; // Replace with your actual image path
 
 const Hero = () => {
-    return (
-        <div className="h-[500px] flex items-center justify-between bg-[#f9f5ec] px-[150px]  pt-20">
-            <div className="w-1/2 space-y-6">
-                <h1 className="text-4xl font-bold text-[#ff957a] leading-snug">Unique Finds<br />Affordable Trends, Timeless Impact.</h1>
-                <p className="text-lg text-gray-400">Lorem ipsum dolor sit amet consectetur adipisicing elit. Amet, debitis pariatur dolores dolorum inventore similique, at magnam fugiat ipsam necessitatibus expedita! Autem labore esse saepe, dolor qui culpa id. Nisi.</p>
-                <button className="px-6 py-3 text-lg bg-[#ff957a] text-white rounded-full hover:bg-[#e76848]">See Collection</button>
-            </div>
-            <div className="flex justify-center">
-                <img src={phone} alt="Watch" className="w-[500px]" />
-            </div>
-        </div>
-    );
+  return (
+    <div className="h-[600px] flex items-center justify-between bg-gradient-to-r from-[#fff5f5] to-[#ffe8e8] px-[150px] pt-20">
+      {/* Left Section: Product Details */}
+      <div className="w-1/2 space-y-6">
+        
+        <h1 className="text-[42px] font-bold text-[#ff6b6b] leading-snug">
+          A new life<br />To your Pre-Loved Products
+        </h1>
+        <p className="text-[20px] text-gray-600">
+        Find unique treasures and timeless style without breaking the bank. Shop your favorites at our thrift store today!
+        </p>
+        <button className="px-6 py-3 text-lg bg-[#ff6b6b] text-white rounded-full hover:bg-[#e76848]">
+          Shop Now
+        </button>
+      </div>
+
+      {/* Right Section: Product Image */}
+      <div className="flex justify-center items-center">
+        <img
+          src={productImage}
+          alt="Most Selling Product"
+          className="w-[470px]  mt-[43px]"
+        />
+      </div>
+    </div>
+  );
 };
 
 export default Hero;

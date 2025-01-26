@@ -26,7 +26,7 @@ const NewArrivals = () => {
     ];
 
     return (
-        <div className="flex flex-col  bg-white py-10  px-[150px]">
+        <div className="flex flex-col  bg-black py-10  px-[150px]">
             <h1 className="text-2xl font-bold text-gray-800 mb-10">New Arrivals</h1>
             
             <div className="flex  space-x-7 flex-wrap ">
