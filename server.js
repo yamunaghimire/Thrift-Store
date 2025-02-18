@@ -193,22 +193,34 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import connectDB from "./config/db.js";
 import UserModel from "./models/UserModel.js";
-import CategoryModel from "./models/CategoryModel.js"; // Corrected import
-import Product from "./models/ProductModel.js"; // Adjust the path to where your Product model is located
+import CategoryModel from "./models/CategoryModel.js"; 
+import Product from "./models/productModel.js"; // Adjust the path to where your Product model is located
+import Order from "./models/OrderModel.js";
+import orderRoutes from "./routes/OrderRoutes.js";
+import { authenticateToken } from "./middlewares/authMiddleware.js"; // Auth middleware
+import adminProductRoutes from "./routes/adminProductRoutes.js";
+
+
 
 
 import productRoutes from "./routes/productRoutes.js";
+import bodyParser from "body-parser";
+import stripeRoutes from "./routes/StripeRoute.js";
 
 dotenv.config();
 connectDB();
 
 const app = express();
+// Stripe Webhook Middleware 
+app.post('/api/webhook', express.raw({ type: 'application/json' }));
 app.use(express.json());
 app.use(cors({
-   origin: ["http://localhost:3000"],
-   methods: ["GET", "POST"],
-   credentials: true
+  origin: "http://localhost:3000", // Your frontend URL
+  methods: ["GET", "POST", "PUT", "DELETE"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials:true,
 }));
+app.use(bodyParser.json()); 
 
 // User Registration Route
 app.post("/register", async (req, res) => {
@@ -245,10 +257,29 @@ app.post("/login", async (req, res) => {
     const token = jwt.sign({ id: user._id, role: user.role }, process.env.JWT_SECRET, {
       expiresIn: "1h",
     });
+    res.json({
+      message: "Login successful",
+      token,
+      user: {
+        id: user._id,
+        fullname: user.fullname,
+        email: user.email,
+        phone: user.phone,
+        role: user.role,
+      },
+    });
 
-    res.json({ message: "Login successful", token });
   } catch (err) {
     res.status(500).json({ message: "An error occurred during login", error: err });
+  }
+});
+app.get('/getUsers', async (req, res) => {
+  try {
+    const users = await UserModel.find(); // Get all users from MongoDB
+    res.json(users); // Send users as a response
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ message: 'Error fetching users' });
   }
 });
 
@@ -297,6 +328,19 @@ app.get('/api/products/:id', async (req, res) => {
     res.status(500).json({ message: 'Error fetching product', error: error.message });
   }
 });
+app.use("/api", orderRoutes); 
+// app.use("/api/orders", authenticateToken, orderRoutes); // Order routes
+
+app.use("/api/admin/products", adminProductRoutes);
+
+app.use("/api/stripe", stripeRoutes);
+
+
+
+
+
+
+
 
 
 // Default route

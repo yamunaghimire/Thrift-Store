@@ -1,11 +1,13 @@
+//Cart.js
 import React from "react";
-import { useCart } from "../contexts/CartContext"; // Make sure the import path is correct
+import { useCart } from "../contexts/CartContext"; 
+import { Link } from "react-router-dom";
 
 const Cart = () => {
-  const { cartItems, removeFromCart } = useCart(); // Get removeFromCart function from context
+  const { cartItems, removeFromCart } = useCart(); 
 
   const handleCheckout = () => {
-    // Handle the checkout process here
+    
     alert("Proceeding to checkout...");
   };
 
@@ -28,7 +30,7 @@ const Cart = () => {
               </div>
               {/* Remove Button */}
               <button
-                onClick={() => removeFromCart(item._id)} // Remove the item by its ID
+                onClick={() => removeFromCart(item._id)} 
                 className="text-red-500 ml-4"
               >
                 Remove
@@ -40,12 +42,13 @@ const Cart = () => {
               Total: Rs{" "}
               {cartItems.reduce((total, item) => total + item.price, 0)}
             </p>
-            <button
+            <Link to="/checkout" ><button
               onClick={handleCheckout}
               className="bg-pink-500 text-white w-full py-2 rounded-md mt-4"
             >
-              Checkout
+              Proceed
             </button>
+            </Link>
           </div>
         </div>
       ) : (
@@ -56,3 +59,4 @@ const Cart = () => {
 };
 
 export default Cart;
+

@@ -1,3 +1,4 @@
+//productModel.js 
 import mongoose from "mongoose";
 
 const productSchema = new mongoose.Schema(
@@ -11,7 +12,7 @@ const productSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
-    price: {
+    price: { 
       type: Number,
       required: true,
     },
@@ -23,6 +24,7 @@ const productSchema = new mongoose.Schema(
     image: {
       type: String, // URL or path to the product image
     },
+    sold: { type: Boolean, default: false },
   },
   { timestamps: true }
 );

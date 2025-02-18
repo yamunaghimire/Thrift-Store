@@ -1,5 +1,7 @@
 import React from "react";
-import productImage from "../images/phone.png"; // Replace with your actual image path
+import productImage from "../images/phone.png"; 
+import { Link } from "react-router-dom";
+
 
 const Hero = () => {
   return (
@@ -13,9 +15,11 @@ const Hero = () => {
         <p className="text-[20px] text-gray-600">
         Find unique treasures and timeless style without breaking the bank. Shop your favorites at our thrift store today!
         </p>
-        <button className="px-6 py-3 text-lg bg-[#ff6b6b] text-white rounded-full hover:bg-[#e76848]">
+        <p className="text-[20px] text-gray-600">Shop our luxury preloved finds.</p>
+        <Link to='/categories/luxuryfinds'>  <button className="px-6 py-3 mt-5 text-lg bg-[#ff6b6b] text-white rounded-full hover:bg-[#e76848]">
           Shop Now
         </button>
+        </Link>
       </div>
 
       {/* Right Section: Product Image */}

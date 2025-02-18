@@ -75,90 +75,79 @@ const RegistrationForm = () => {
   };
 
   return (
-    <div className="flex justify-center items-center min-h-screen bg-gray-50">
-      <div className="w-full max-w-md bg-white p-8 rounded-lg shadow-md">
-        <h1 className="text-2xl font-bold text-center mb-4">Register</h1>
+    <div className="flex justify-center items-center min-h-screen">
+        <div className="text-4xl font-bold text-black mr-8">Join us <br /> on this journey <br /> to make fashion sustainable <br />and stylish. </div>
+      
+      <div className="w-full max-w-lg bg-white p-8 mt-[62px] rounded-lg shadow-md">
+        <h1 className="text-3xl font-bold text-center mb-4">Register </h1>
         <form onSubmit={handleSubmit}>
-          <div className="mb-4">
-            <label htmlFor="fullname" className="block text-sm font-medium text-gray-700">
-              Full Name
-            </label>
+          <div className="mb-4 ">
+           
             <input
               id="fullname"
               type="text"
               name="fullname"
               value={formData.fullname}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
-              placeholder="Enter your full name"
+              className="w-full p-3 border border-gray-300 rounded"
+              placeholder="Your full name"
             />
           </div>
 
          
           <div className="mb-4">
-            <label htmlFor="email" className="block text-sm font-medium text-gray-700">
-              Email
-            </label>
+            
             <input
               id="email"
               type="email"
               name="email"
               value={formData.email}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
-              placeholder="Enter your email"
+              className="w-full p-3 border border-gray-300 rounded"
+              placeholder="Your email"
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="phone" className="block text-sm font-medium text-gray-700">
-              Phone
-            </label>
+            
             <input
               id="phone"
               type="text"
               name="phone"
               value={formData.phone}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
-              placeholder="Enter your phone number"
+              className="w-full p-3 border border-gray-300 rounded"
+              placeholder="Your phone number"
             />
           </div>
           <div className="mb-4">
-            <label htmlFor="password" className="block text-sm font-medium text-gray-700">
-              Password
-            </label>
+            
             <input
               id="password"
               type="password"
               name="password"
               value={formData.password}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
-              placeholder="Enter your password"
+              className="w-full p-3 border border-gray-300 rounded"
+              placeholder="Your password"
             />
           </div>
           <div className="mb-4">
-            <label
-              htmlFor="confirmPassword"
-              className="block text-sm font-medium text-gray-700"
-            >
-              Confirm Password
-            </label>
+            
             <input
               id="confirmPassword"
               type="password"
               name="confirmPassword"
               value={formData.confirmPassword}
               onChange={handleChange}
-              className="w-full p-2 border border-gray-300 rounded"
+              className="w-full p-3 border border-gray-300 rounded"
               placeholder="Confirm your password"
             />
           </div>
           <button
             type="submit"
-            className="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition duration-300"
+            className="w-full text-white font-medium text-[20px] bg-[#f06595] p-3 rounded hover:bg-[#cd3c71] transition duration-300"
           >
-            Register
+            REGISTER MY ACCOUNT
           </button>
         </form>
         <ToastContainer />

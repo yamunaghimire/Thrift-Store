@@ -1,19 +1,18 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
 import westernImage from "../assests/images/western.jpg";
-import traditionalsImage from "../assests/images/traditional.png";
+import traditionalsImage from "../assests/images/traditional.jpg";
 import accessoriesImage from "../assests/images/accesories.jpg";
-import skincareImage from "../assests/images/skincare.png";
-import makeupImage from "../assests/images/makeup.png";
+import makeupImage from "../assests/images/makeup.jpg";
 
 const Collections = () => {
   const navigate = useNavigate();
 
   const items = [
-    { name: "Western", image: westernImage, path: "/productlist" },
-    { name: "Traditional", image: traditionalsImage, path: "/traditionals" },
-    { name: "Accessories", image: accessoriesImage, path: "/lehenga" },
-    { name: "Makeup", image: skincareImage, path: "/suits" },
+    { name: "Western", image: westernImage, path: "/categories/western" },
+    { name: "Traditional", image: traditionalsImage, path: "/categories/traditional" },
+  { name: "Accessories", image: accessoriesImage, path: "/categories/accessories" },
+  { name: "Makeup", image: makeupImage, path: "/categories/makeup" },
     // { name: "Skinc", image: makeupImage, path: "/makeup" },
   ];
 
@@ -40,7 +39,7 @@ const Collections = () => {
                 className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-500"
               />
               {/* Text Overlay */}
-              <div className="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center">
+              <div className="absolute inset-0 bg-black bg-opacity-45 flex items-center justify-center">
                 <span className="text-white text-xl font-semibold tracking-wide">
                   {item.name}
                 </span>

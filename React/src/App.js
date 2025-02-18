@@ -1,65 +1,5 @@
-// // import React from 'react';
-// // import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-// // import Navbar from './Components/Navbar';
-// // import Hero from './Components/Hero';
-// // import Collections from './Components/Collections';
-
-// // import Footer from './Components/Footer';
-// // import Register from './Components/Register';
-
-// // import { ToastContainer } from 'react-toastify'; 
-// // import About from './Pages/About';
-// // import WhyChooseUs from './Components/Why';
-// // import NewArrivals from './Components/NewArrivals';
-// // import Login from './Components/Login';
-// // import Admin from './Components/admin';
-// // import ProductList from './Pages/productList';
-// // import AdminUpload from './Pages/AdminUpload';
-// // import ProductCard from './Components/ProductCard';
-
-
-
-// // const App = () => {
-// //   return (
-// //     <Router>
-// //       <div className="font-sans">
-// //         <Navbar />
-// //         <Routes>
-// //           <Route path="/" element={
-// //             <>
-// //               <Hero />
-// //               <Collections />
-// //               <NewArrivals />
-// //               <WhyChooseUs/>
-// //               <Footer />
-// //               <Register/>
-// //               <ProductCard/>
-// //               <ProductList/>
-// //               <AdminUpload/>
-              
-              
-
-// //             </>
-// //           } />
-// //           <Route path="/register" element={<Register />} />
-// //           <Route path="/login" element={<Login/>} />
-// //           <Route path="/about" element={<About />} />
-// //           <Route path="/admin" element={<Admin/>} />
-// //           <Route path="/productcard" element={<ProductCard/>} />
-// //           <Route path="/productlist" element={<ProductList/>} />
-// //           <Route path="/adminupload" element={<AdminUpload/>} />
-
-// //         </Routes>
-    
-// //         <ToastContainer />
-// //       </div>
-// //     </Router>
-// //   );
-// // };
-
-
 import React from 'react';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes, Navigate } from 'react-router-dom';
 import Navbar from './Components/Navbar';
 import Hero from './Components/Hero';
 import Collections from './Components/Collections';
@@ -67,21 +7,29 @@ import Footer from './Components/Footer';
 import Register from './Components/Register';
 import { ToastContainer } from 'react-toastify';
 import About from './Pages/About';
-
-// import NewArrivals from './Components/NewArrivals';
 import Login from './Components/Login';
-// import Admin from './Components/Admin';
 import ProductList from './Pages/productList';
 import AdminUpload from './Pages/AdminUpload';
 import ProductCard from './Components/ProductCard';
-import { AuthProvider } from './contexts/AuthContext';
-
+import { AuthProvider, useAuth } from './contexts/AuthContext';
 import ProductDetails from './Components/ProductDetails';
 import CartPage from './Components/Cart';
-// import ProtectedRoute from './Components/ProtectedRoute';
+import Checkout from './Pages/Checkout';
+import OrderSuccess from './Pages/OrderSuccess';
+import CategoryPage from './Components/Category';
+import Admin from './Components/admin';
+import OrdersTable from './Pages/OrderTable';
+import AdminProductManagement from "./Pages/AdminProductManagement";
+
+
+const ProtectedRoute = ({ children }) => {
+  const { isAuthenticated } = useAuth();
+
+  return isAuthenticated ? children : <Navigate to="/login" />;
+};
 
 const App = () => {
-  return (
+  return ( 
     <AuthProvider>
       <Router>
         <div className="font-sans">
@@ -93,26 +41,51 @@ const App = () => {
                 <>
                   <Hero />
                   <Collections />
-                  {/* <NewArrivals /> */}
-                  {/* <ProductList/> */}
+                  
+
                   <Footer />
+                 
+                  
+                  
+                 
                 </>
               }
             />
             <Route path="/register" element={<Register />} />
             <Route path="/login" element={<Login />} />
-            <Route path="/about" element={<About />} />
-            
-            <Route path="/productlist" element={<ProductList />} />
-          
-            <Route path="/upload" element={<AdminUpload />} />
-            
-            <Route path="/products/:id" element={<ProductDetails />} />
-            <Route path="/cart" element={<CartPage/>} />
+            <Route path="/userdetails" element={<Admin/>} />
 
-       
+            <Route path="/about" element={<About />} />
             <Route path="/productlist" element={<ProductList />} />
+            <Route path="/upload" element={<AdminUpload />} />
+            <Route path="/products/:id" element={<ProductDetails />} />
+            <Route path="/categories/:category" element={<CategoryPage />} />
+            <Route path="/orders" element={<OrdersTable/>} />
+           
+            
+
+            
+            {/* Protected routes */}
+            <Route
+              path="/cart"
+              element={
+                <ProtectedRoute>
+                  <CartPage />
+                </ProtectedRoute>
+              }
+            />
+            <Route
+              path="/checkout"
+              element={
+                <ProtectedRoute>
+                  <Checkout />
+                </ProtectedRoute>
+              }
+            />
+            
             <Route path="/productcard" element={<ProductCard />} />
+            <Route path="/ordersuccess" element={<OrderSuccess />} />
+            <Route path="/admin/products" element={<AdminProductManagement />} />
           </Routes>
 
           <ToastContainer />
