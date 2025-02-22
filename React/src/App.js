@@ -18,8 +18,9 @@ import Checkout from './Pages/Checkout';
 import OrderSuccess from './Pages/OrderSuccess';
 import CategoryPage from './Components/Category';
 import Admin from './Components/admin';
-import OrdersTable from './Pages/OrderTable';
 import AdminProductManagement from "./Pages/AdminProductManagement";
+import OrderManagement from './Pages/OrderTable';
+
 
 
 const ProtectedRoute = ({ children }) => {
@@ -60,7 +61,8 @@ const App = () => {
             <Route path="/upload" element={<AdminUpload />} />
             <Route path="/products/:id" element={<ProductDetails />} />
             <Route path="/categories/:category" element={<CategoryPage />} />
-            <Route path="/orders" element={<OrdersTable/>} />
+            <Route path="/ordermanagement" element={<OrderManagement/>} />
+         
            
             
 

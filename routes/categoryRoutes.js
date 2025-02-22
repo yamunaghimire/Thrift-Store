@@ -24,4 +24,4 @@ app.post("/categories", async (req, res) => {
   }
 });
 
-export default app;  // Ensure the app is exported as default if this is the intended export method
+export default app;  

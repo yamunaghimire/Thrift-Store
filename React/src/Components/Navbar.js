@@ -349,7 +349,7 @@ const Navbar = () => {
                   Users
                 </Link>
                 <Link
-                  to="/orders"
+                  to="/ordermanagement"
                   className="block text-sm text-black hover:text-[#f06595] font-semibold transition-colors"
                 >
                   Orders

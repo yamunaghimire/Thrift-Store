@@ -229,7 +229,7 @@ const stripePromise = loadStripe("pk_test_51QlhetJaASwzLigVevWZOCr5lvoZ65pRNfkwO
 const Checkout = () => {
   const { cartItems, clearCart } = useCart();
   const [shippingAddress, setShippingAddress] = useState("");
-  const [paymentMethod, setPaymentMethod] = useState("cash"); // New state for payment method
+  const [paymentMethod, setPaymentMethod] = useState("cash"); 
   const navigate = useNavigate();
 
   const totalAmount = cartItems.reduce((total, item) => total + item.price, 0);
@@ -249,36 +249,12 @@ const Checkout = () => {
   }
 
   
-  // const handleStripePayment = async () => {
-  //   if (!userId) {
-  //     alert("You must be logged in to place an order.");
-  //     navigate("/login");
-  //     return;
-  //   }
-
-  //   const stripe = await stripePromise;
-
-  //   const response = await fetch("http://localhost:8080/api/stripe/checkout", {
-  //     method: "POST",
-  //     headers: { "Content-Type": "application/json" },
-  //     body: JSON.stringify({ cartItems }),
-  //   });
-
-  //   const data = await response.json();
-  //   if (response.ok) {
-  //     await stripe.redirectToCheckout({ sessionId: data.id });
-  //   } else {
-  //     alert("Payment failed");
-  //   }
-  // };
-  const handleStripePayment = async () => {
-    // if (!userId) {
-    //   alert("You must be logged in to place an order.");
-    //   navigate("/login");
-    //   return;
-    // }
   
-    // Step 1: Create an order first
+  const handleStripePayment = async () => {
+    
+    console.log("Initiating payment...");
+  
+    // Create an order first
     const orderResponse = await fetch("http://localhost:8080/api/order", {
       method: "POST",
       headers: {
@@ -297,20 +273,26 @@ const Checkout = () => {
     });
   
     const orderData = await orderResponse.json();
+    console.log("🛠 Order Response:", orderData);
     
     if (!orderResponse.ok) {
+      console.error("Order creation failed:", orderData);
       alert(orderData.message || "Failed to create order.");
       return;
     }
   
-    const orderId = orderData._id; // Get order ID from response
+    // const orderId = orderData._id; // Get order ID from response
+    const orderId = orderData.orderId; 
+    console.log("Order Created:", orderId);
   
-    // Step 2: Send orderId with Stripe session request
+    // Send orderId with Stripe session request
     const stripe = await stripePromise;
+    
+    
     const response = await fetch("http://localhost:8080/api/stripe/checkout", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ cartItems, orderId }), // ✅ Include orderId
+      body: JSON.stringify({ cartItems, orderId }), 
     });
   
     const data = await response.json();
@@ -324,16 +306,12 @@ const Checkout = () => {
   
   
   const handleSubmitOrder = async () => {
-    // if (!userId) {
-    //   alert("You must be logged in to place an order.");
-    //   navigate("/login");
-    //   return;
-    // }
+   
   
     if (paymentMethod === "card") {
       handleStripePayment();
     } else {
-      // Handle Cash on Delivery
+      // Cash on Delivery
       try {
         const response = await fetch("http://localhost:8080/api/order", {
           method: "POST",

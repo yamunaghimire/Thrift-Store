@@ -1,49 +1,67 @@
 import React, { useEffect, useState } from "react";
+import axios from "axios";
 
-const OrdersTable = () => {
+const OrderManagement = () => {
   const [orders, setOrders] = useState([]);
 
+  // Fetch orders
+  const fetchOrders = async () => {
+    try {
+      const response = await axios.get("http://localhost:8080/api/orders"); // Adjust the API endpoint
+      setOrders(response.data);
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+    }
+  };
+
   useEffect(() => {
-    fetch("/api/orders", {
-      headers: { Authorization: `Bearer ${localStorage.getItem("token")}` },
-    })
-      .then((res) => res.json())
-      .then((data) => setOrders(data))
-      .catch((error) => console.error("Error fetching orders:", error));
+    fetchOrders();
   }, []);
 
   return (
-    <div className="p-4">
-      <h1 className="text-3xl font-bold mb-4 text-center">Orders List</h1>
-      <table className="min-w-full border-collapse border border-gray-300">
+    <div className="container mx-auto p-4">
+      <h2 className="text-3xl font-bold mb-6 text-center">Order Management</h2>
+
+      <table className="min-w-full m-auto bg-white border border-gray-300 shadow-lg">
         <thead>
-          <tr>
-            <th className="border border-gray-300 px-4 py-2">User</th>
-            <th className="border border-gray-300 px-4 py-2">Email</th>
-            <th className="border border-gray-300 px-4 py-2">Product</th>
-            <th className="border border-gray-300 px-4 py-2">Price</th>
-            <th className="border border-gray-300 px-4 py-2">Total Price</th>
+          <tr className="bg-gray-200">
+            <th className="py-2 px-4 border-b text-left">Order ID</th>
+            <th className="py-2 px-4 border-b text-left">User</th>
+            <th className="py-2 px-4 border-b text-left">Items</th>
+            <th className="py-2 px-4 border-b text-left">Total Amount</th>
+            <th className="py-2 px-4 border-b text-left">Payment Status</th>
+            <th className="py-2 px-4 border-b text-left">Order Status</th>
+            <th className="py-2 px-4 border-b text-left">Date</th>
           </tr>
         </thead>
         <tbody>
-          {orders.map((order, index) => (
-            <React.Fragment key={index}>
-              {order.orderList.map((item, itemIndex) => (
-                <tr key={itemIndex} className="text-center">
-                  {itemIndex === 0 && (
-                    <>
-                      <td rowSpan={order.orderList.length} className="border border-gray-300 px-4 py-2">{order.user.name}</td>
-                      <td rowSpan={order.orderList.length} className="border border-gray-300 px-4 py-2">{order.user.email}</td>
-                    </>
-                  )}
-                  <td className="border border-gray-300 px-4 py-2">{item.productName}</td>
-                  <td className="border border-gray-300 px-4 py-2">${item.price}</td>
-                  {itemIndex === 0 && (
-                    <td rowSpan={order.orderList.length} className="border border-gray-300 px-4 py-2">${order.totalPrice}</td>
-                  )}
-                </tr>
-              ))}
-            </React.Fragment>
+          {orders.map((order) => (
+            <tr key={order._id} className="border-b hover:bg-gray-100">
+              <td className="py-2 px-4">{order._id}</td>
+              <td className="py-2 px-4">
+                {order.user && order.user.name ? order.user.name : "Unknown User"}
+              </td>
+              <td className="py-2 px-4">
+                {order.items && order.items.length > 0 ? (
+                  order.items.map((item, index) => (
+                    <div key={index}>
+                      {item.product && item.product.name
+                        ? item.product.name
+                        : "Unknown Product"}{" "}
+                      (Rs {item.price})
+                    </div>
+                  ))
+                ) : (
+                  "No items"
+                )}
+              </td>
+              <td className="py-2 px-4">Rs {order.totalAmount}</td>
+              <td className="py-2 px-4">{order.paymentStatus}</td>
+              <td className="py-2 px-4">{order.status}</td>
+              <td className="py-2 px-4">
+                {order.createdAt ? new Date(order.createdAt).toLocaleString() : "Unknown Date"}
+              </td>
+            </tr>
           ))}
         </tbody>
       </table>
@@ -51,4 +69,4 @@ const OrdersTable = () => {
   );
 };
 
-export default OrdersTable;
+export default OrderManagement;

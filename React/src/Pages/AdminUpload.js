@@ -104,8 +104,8 @@ const AdminUpload = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-100">
-      <h1 className="text-2xl font-bold mb-6">Admin Panel - Upload Product</h1>
+    <div className="flex flex-col items-center justify-center min-h-screen bg-white">
+      <h1 className="text-3xl font-bold mb-6  p-3 text-black ">Admin Panel - Upload Product</h1>
       <form className="w-full max-w-lg bg-white p-6 rounded-lg shadow-md" onSubmit={handleSubmit}>
         <input
           type="text"
@@ -156,7 +156,7 @@ const AdminUpload = () => {
         <button
           type="submit"
           disabled={loading}
-          className="w-full p-2 bg-blue-500 text-white rounded hover:bg-blue-600 disabled:bg-gray-400"
+          className="w-full p-2 bg-[#f06595] text-white rounded hover:bg-[#ea4981] disabled:bg-gray-400"
         >
           {loading ? "Uploading..." : "Upload Product"}
         </button>

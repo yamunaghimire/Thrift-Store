@@ -220,7 +220,10 @@ import Product from "../models/productModel.js";
 import { authenticateToken } from "../middlewares/authMiddleware.js";
 import Stripe from "stripe";
 
+
+
 const router = express.Router();
+
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY);
 
 // Create a new order
@@ -262,15 +265,12 @@ router.post("/order", authenticateToken, async (req, res) => {
       savedOrder.status = "processing"; 
       await savedOrder.save();
 
-      const paymentIntent = await stripe.paymentIntents.create({
-        amount: totalAmount * 100, 
-        currency: "usd",
-        metadata: {
-          orderId: savedOrder._id.toString(),
-        },
-      });
+      
 
-      return res.status(201).json({ clientSecret: paymentIntent.client_secret });
+      return res.status(201).json({
+        orderId: savedOrder._id,
+        message: "Order created successfully, please proceed with Stripe Checkout",
+      });
     }
 
     return res.status(400).json({ message: "Invalid payment method." });
@@ -280,49 +280,61 @@ router.post("/order", authenticateToken, async (req, res) => {
   }
 });
 
+
+
+// Webhook to listen for successful payments
 router.post("/webhook", express.raw({ type: "application/json" }), async (req, res) => {
   const sig = req.headers["stripe-signature"];
-  const endpointSecret = process.env.STRIPE_WEBHOOK_SECRET;
-  let event;
+  console.log("I am webhook.");
 
   try {
-    event = stripe.webhooks.constructEvent(req.body, sig, endpointSecret);
-  } catch (err) {
-    return res.status(400).send(`Webhook Error: ${err.message}`);
-  }
+    const event = stripe.webhooks.constructEvent(req.body, sig, process.env.STRIPE_WEBHOOK_SECRET);
 
-  if (event.type === "checkout.session.completed") {
-    const session = event.data.object;
-    const orderId = session.metadata?.orderId; 
+    if (event.type === "checkout.session.completed") {
+      const session = event.data.object;
+      const orderId = session.metadata.orderId; // Get order ID from metadata
 
-    if (!orderId) {
-      console.error("Missing orderId in metadata");
-      return res.status(400).send("Missing orderId");
-    }
+      console.log("Payment successful for Order ID:", orderId);
 
-    try {
-      const order = await Order.findById(orderId);
-      if (order) {
-        order.paymentStatus = "completed";
-        order.status = "completed";
+      // Update the order status
+      await Order.findByIdAndUpdate(orderId, {
+        paymentStatus: "Completed",
+        status: "Processing",
+      });
 
-        // Mark products as sold
-        const productIds = order.items.map((item) => item.product);
-        await Product.updateMany(
-          { _id: { $in: productIds } },
-          { $set: { sold: true } } 
-        );
-
-        await order.save();
+      // Mark products as sold out
+      const order = await Order.findById(orderId).populate("items.product");
+      for (const item of order.items) {
+        await Product.findByIdAndUpdate(item.product._id, { sold: true });
       }
-    } catch (error) {
-      console.error("Error updating order:", error);
-      return res.status(500).send("Error updating order");
-    }
-  }
 
-  res.status(200).send("Success");
+      console.log("Order updated and products marked as sold");
+    }
+
+    res.status(200).send("Webhook received!");
+  } catch (err) {
+    console.error("Webhook error:", err.message);
+    res.status(400).send(`Webhook error: ${err.message}`);
+  }
 });
+
+
+
+
+router.get("/orders", async (req, res) => {
+  try {
+    const orders = await Order.find()
+      .populate("user", "name email") // Populating user details
+      .populate("items.product", "name price") // Populating product details
+      .sort({ createdAt: -1 }); // Sorting by date, newest first
+
+    res.json(orders);
+  } catch (error) {
+    console.error("Error fetching orders:", error);
+    res.status(500).json({ message: "Server error" });
+  }
+});
+
 
 
 export default router;
